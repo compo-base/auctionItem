@@ -1,0 +1,53 @@
+package se331.lab08_1.dao;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
+import se331.lab08_1.entity.Event;
+import se331.lab08_1.entity.Organizer;
+import se331.lab08_1.repository.EventRepository;
+import se331.lab08_1.repository.OrganizerRepository;
+@Repository
+@RequiredArgsConstructor
+@Profile("db")
+
+public class EventDaoDbImpl implements EventDao{
+
+
+        final EventRepository eventRepository;
+
+        @Override
+        public Integer getEventSize(){
+            return Math.toIntExact(eventRepository.count());
+        }
+
+        @Override
+        public Page<Event> getEvents(Integer pageSize, Integer page){
+            // Determine the total number of events in the database.
+            long totalEvents = eventRepository.count();
+
+            // If pageSize is null, set it to the total number of events.
+            pageSize = pageSize == null ? (int) totalEvents : pageSize;
+
+            // If page is null, default to fetching the first page.
+            page = page == null ? 0 : page - 1; // Convert to 0-based for Spring's PageRequest.
+
+            // Use the PageRequest object to fetch the desired page of events from the database.
+            return eventRepository.findAll(PageRequest.of(page, pageSize));
+        }
+
+        @Override
+        public Event getEvent(Long id){
+            return eventRepository.findById(id).orElse(null);
+        }
+
+        @Override
+        public Event save(Event event){
+            return eventRepository.save(event);
+        }
+    }
+
+
+
