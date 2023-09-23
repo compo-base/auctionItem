@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.server.ResponseStatusException;
+import se331.lab08_1.entity.Event;
 import se331.lab08_1.entity.Organizer;
 import se331.lab08_1.service.OrganizerService;
 
@@ -35,8 +36,8 @@ public class OrganizerController {
         }
     }
     @PostMapping("/organizer")
-    public ResponseEntity<?> addEvent(@RequestBody Organizer event){
-        Organizer output = eventService.save(event);
+    public ResponseEntity<?> addEvent(@RequestBody Organizer organize){
+        Organizer output = eventService.save(organize);
         return ResponseEntity.ok(output);
     }
 
