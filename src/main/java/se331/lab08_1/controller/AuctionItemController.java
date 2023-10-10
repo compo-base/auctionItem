@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se331.lab08_1.entity.AuctionItem;
 import se331.lab08_1.service.AuctionItemService;
+import se331.lab08_1.util.LabMapper;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,19 +25,18 @@ public class AuctionItemController {
         Page<AuctionItem> pageOutput = auctionItemService.getAuctionItems(perPage,page);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("x-total-count",String.valueOf(pageOutput.getTotalElements()));
-        return new ResponseEntity<>(pageOutput.getContent(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(LabMapper.INSTANCE.getAuctionItemDto(pageOutput.getContent()),responseHeaders, HttpStatus.OK);
+
     }
 
     @GetMapping("items/{id}")
     public ResponseEntity<?> getAuctionItem(@PathVariable("id")Long id){
         AuctionItem output = auctionItemService.getAuctionItem(id);
         if(output != null){
-            return ResponseEntity.ok(output);
+            return ResponseEntity.ok(LabMapper.INSTANCE.getAuctionItemDto(output));
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "the given id is not found");
         }
     }
-
-
 
 }
