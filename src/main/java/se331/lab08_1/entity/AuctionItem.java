@@ -4,6 +4,7 @@ package se331.lab08_1.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,7 +20,8 @@ public class AuctionItem {
     String type;
     String description;
     @OneToMany(mappedBy ="item")
-    List<Bid> bids;
+    @Builder.Default
+    List<Bid> bids = new ArrayList<>();
     @OneToOne
     Bid successfulBid;
 
