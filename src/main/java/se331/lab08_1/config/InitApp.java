@@ -1,6 +1,7 @@
 package se331.lab08_1.config;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -19,6 +20,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     final BidRepository bidRepository;
 
     @Override
+    @Transactional
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         AuctionItem item;
         Bid bid;
@@ -28,7 +30,10 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .build());
         bid = bidRepository.save(Bid.builder().amount(1000).item(item).build());
         bid = bidRepository.save(Bid.builder().amount(1200).item(item).build());
-        Bid highestBidForItem1 = bidRepository.save(Bid.builder().amount(1300).datetime("2023-10-10 12:10:10").item(item).build());
+        Bid highestBidForItem1 = bidRepository.save(Bid.builder()
+                .amount(1300)
+                .item(item)
+                .build());
         item.setSuccessfulBid(highestBidForItem1);
         item.getBids().addAll(List.of(bid, bid, highestBidForItem1));
 
@@ -36,21 +41,45 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .type("Vintage Car")
                 .description("A classic 1950s sports car in mint condition.")
                 .build());
+        bid = bidRepository.save(Bid.builder().amount(50000).item(item).build());
+        bid = bidRepository.save(Bid.builder().amount(52000).item(item).build());
+        Bid successfulBid2 = bidRepository.save(Bid.builder()
+                .amount(53000)
+                .item(item)
+                .build());
+        item.setSuccessfulBid(successfulBid2);
+        item.getBids().addAll(List.of(bid, bid, successfulBid2));
 
         item = auctionItemRepository.save(AuctionItem.builder()
                 .type("Diamond Necklace")
                 .description("A stunning necklace featuring a 5-carat diamond centerpiece.")
                 .build());
+        bid = bidRepository.save(Bid.builder().amount(15000).item(item).build());
+        bid = bidRepository.save(Bid.builder().amount(15200).item(item).build());
+        Bid successfulBid3 = bidRepository.save(Bid.builder()
+                .amount(15300)
+                .item(item)
+                .build());
+        item.setSuccessfulBid(successfulBid3);
+        item.getBids().addAll(List.of(bid, bid, successfulBid3));
 
         item = auctionItemRepository.save(AuctionItem.builder()
                 .type("Signed Book")
                 .description("A book signed by a famous author.")
                 .build());
+        bid = bidRepository.save(Bid.builder().amount(200).item(item).build());
+        bid = bidRepository.save(Bid.builder().amount(220).item(item).build());
+        bid = bidRepository.save(Bid.builder().amount(230).item(item).build());
+        item.getBids().addAll(List.of(bid, bid, bid));
 
         item = auctionItemRepository.save(AuctionItem.builder()
                 .type("Painting")
                 .description("A painting by a renowned artist.")
                 .build());
+        bid = bidRepository.save(Bid.builder().amount(5000).item(item).build());
+        bid = bidRepository.save(Bid.builder().amount(5200).item(item).build());
+        bid = bidRepository.save(Bid.builder().amount(5300).item(item).build());
+        item.getBids().addAll(List.of(bid, bid, bid));
 
     }
 }
