@@ -2,6 +2,7 @@ package se331.lab08_1.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import se331.lab08_1.dao.AuctionItemDao;
 import se331.lab08_1.entity.AuctionItem;
@@ -29,6 +30,10 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     @Override
     public AuctionItem save(AuctionItem event){
         return auctionItemDao.save(event);
+    }
+    @Override
+    public Page<AuctionItem> getAuctionItems(String name, Pageable page){
+        return auctionItemDao.getAuctionItem(name,page);
     }
 
 

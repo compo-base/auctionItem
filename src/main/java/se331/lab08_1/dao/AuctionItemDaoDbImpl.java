@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import se331.lab08_1.entity.AuctionItem;
 import se331.lab08_1.repository.AuctionItemRepository;
@@ -45,6 +46,10 @@ public class AuctionItemDaoDbImpl implements AuctionItemDao{
         @Override
         public AuctionItem save(AuctionItem event){
             return auctionItemRepository.save(event);
+        }
+        @Override
+        public Page<AuctionItem> getAuctionItem(String name, Pageable page){
+            return auctionItemRepository.findByDescription(name,page);
         }
     }
 

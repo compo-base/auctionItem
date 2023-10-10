@@ -3,6 +3,7 @@ package se331.lab08_1.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,17 @@ public class AuctionItemController {
 
     @GetMapping("items")
     public ResponseEntity<?> getAuctionItemLists(@RequestParam(value = "_limit",required = false)Integer perPage,
-                                           @RequestParam(value = "_page",required = false)Integer page){
-        Page<AuctionItem> pageOutput = auctionItemService.getAuctionItems(perPage,page);
+                                                 @RequestParam(value = "_page",required = false)Integer page,
+                                                 @RequestParam(value = "_des",required = false)String title){
+        perPage = perPage == null ? 3 : perPage;
+        page = page == null ? 1 : page;
+        Page<AuctionItem> pageOutput;
+        if (title == null) {
+            pageOutput = auctionItemService.getAuctionItems(perPage,page);
+        } else {
+            pageOutput = auctionItemService.getAuctionItems(title, PageRequest.of(page-1,perPage));
+        }
+
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("x-total-count",String.valueOf(pageOutput.getTotalElements()));
         return new ResponseEntity<>(LabMapper.INSTANCE.getAuctionItemDto(pageOutput.getContent()),responseHeaders, HttpStatus.OK);
