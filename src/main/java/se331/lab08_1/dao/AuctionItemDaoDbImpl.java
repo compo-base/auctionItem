@@ -49,7 +49,7 @@ public class AuctionItemDaoDbImpl implements AuctionItemDao{
         }
         @Override
         public Page<AuctionItem> getAuctionItem(String name, Pageable page){
-            return auctionItemRepository.findByDescription(name,page);
+            return auctionItemRepository.findByDescriptionContaining(name,page);
         }
     }
 
