@@ -9,27 +9,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import se331.lab08_1.entity.Event;
-import se331.lab08_1.service.EventService;
+import se331.lab08_1.entity.AuctionItem;
+import se331.lab08_1.service.AuctionItemService;
 
 @Controller
 @RequiredArgsConstructor
-public class EventController {
+public class AuctionItemController {
 
-    final EventService eventService;
+    final AuctionItemService auctionItemService;
 
-    @GetMapping("events")
-    public ResponseEntity<?> getEventLists(@RequestParam(value = "_limit",required = false)Integer perPage,
+    @GetMapping("items")
+    public ResponseEntity<?> getAuctionItemLists(@RequestParam(value = "_limit",required = false)Integer perPage,
                                            @RequestParam(value = "_page",required = false)Integer page){
-        Page<Event> pageOutput = eventService.getEvents(perPage,page);
+        Page<AuctionItem> pageOutput = auctionItemService.getAuctionItems(perPage,page);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("x-total-count",String.valueOf(pageOutput.getTotalElements()));
         return new ResponseEntity<>(pageOutput.getContent(), responseHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("events/{id}")
-    public ResponseEntity<?> getEvent(@PathVariable("id")Long id){
-        Event output = eventService.getEvent(id);
+    @GetMapping("items/{id}")
+    public ResponseEntity<?> getAuctionItem(@PathVariable("id")Long id){
+        AuctionItem output = auctionItemService.getAuctionItem(id);
         if(output != null){
             return ResponseEntity.ok(output);
         }else{
@@ -37,11 +37,6 @@ public class EventController {
         }
     }
 
-    @PostMapping("/events")
-    public ResponseEntity<?> addEvent(@RequestBody Event event){
-        Event output = eventService.save(event);
-        return ResponseEntity.ok(output);
-    }
 
 
 }
