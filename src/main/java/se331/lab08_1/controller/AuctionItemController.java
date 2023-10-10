@@ -23,13 +23,18 @@ public class AuctionItemController {
     @GetMapping("items")
     public ResponseEntity<?> getAuctionItemLists(@RequestParam(value = "_limit",required = false)Integer perPage,
                                                  @RequestParam(value = "_page",required = false)Integer page,
-                                                 @RequestParam(value = "_des",required = false)String title){
+                                                 @RequestParam(value = "_des",required = false)String title,
+                                                 @RequestParam(value = "amount",required = false)Double amount){
         perPage = perPage == null ? 3 : perPage;
         page = page == null ? 1 : page;
         Page<AuctionItem> pageOutput;
         if (title == null) {
             pageOutput = auctionItemService.getAuctionItems(perPage,page);
-        } else {
+        }
+        else if(amount != null){
+            pageOutput = auctionItemService.getAuctionItems(amount,PageRequest.of(page - 1, perPage));
+        }
+        else {
             pageOutput = auctionItemService.getAuctionItems(title, PageRequest.of(page-1,perPage));
         }
 
