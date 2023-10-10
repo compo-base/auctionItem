@@ -13,7 +13,7 @@ import se331.lab08_1.repository.AuctionItemRepository;
 @RequiredArgsConstructor
 @Profile("db")
 
-public class AuctionItemDaoDbImpl implements AuctionItemDao{
+public class  AuctionItemDaoDbImpl implements AuctionItemDao{
 
 
         final AuctionItemRepository auctionItemRepository;
@@ -49,7 +49,7 @@ public class AuctionItemDaoDbImpl implements AuctionItemDao{
         }
         @Override
         public Page<AuctionItem> getAuctionItem(String name, Pageable page){
-            return auctionItemRepository.findByDescriptionContaining(name,page);
+            return auctionItemRepository.findByTypeIgnoreCaseContainingOrDescriptionIgnoreCaseContaining(name,name,page);
         }
     }
 

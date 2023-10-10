@@ -10,5 +10,6 @@ public interface AuctionItemRepository extends JpaRepository<AuctionItem,Long> {
     List<AuctionItem> findAll();
     Page<AuctionItem> findByDescription(String description, Pageable page);
     Page<AuctionItem> findByDescriptionContaining(String description, Pageable page);
+    Page<AuctionItem> findByTypeIgnoreCaseContainingOrDescriptionIgnoreCaseContaining (String type,String description, Pageable page);
 
 }
